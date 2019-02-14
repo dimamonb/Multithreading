@@ -86,6 +86,11 @@ public class Solution {
                 System.out.println(ball4.getXpos());
                 s4.cancel(true);
             }
+
+            if(s1.isCancelled() && s2.isCancelled() && s3.isCancelled() && s4.isCancelled()){
+                System.out.println("All cancelled");
+
+            }
         }
 /*        Random r = new Random();
         int xyPos;
