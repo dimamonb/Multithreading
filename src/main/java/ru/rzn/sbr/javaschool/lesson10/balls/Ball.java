@@ -9,6 +9,14 @@ public class Ball implements Runnable {
 
     private volatile boolean visible = false;
 
+    public int getXpos() {
+        return xpos;
+    }
+
+    public int getYpos() {
+        return ypos;
+    }
+
     private int xpos, ypos, xinc, yinc;
 
     private final Color col;

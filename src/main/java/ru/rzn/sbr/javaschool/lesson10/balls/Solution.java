@@ -43,13 +43,54 @@ public class Solution {
         });
 
         Thread.currentThread().setName("MyMainThread");
+        ExecutorService service = Executors.newFixedThreadPool(4);
 
-        Random r = new Random();
+        Ball ball1= new Ball(world, 50, 80, 5, 10, Color.red);
+        Ball ball2= new Ball(world, 70, 100, 8, 6, Color.blue);
+        Ball ball3= new Ball(world, 150, 100, 9, 7, Color.green);
+        Ball ball4= new Ball(world, 200, 130, 3, 8, Color.black);
+
+        nap((int) (5000 * Math.random()));
+        Future<?> s1 = service.submit(ball1);
+
+        nap((int) (5000 * Math.random()));
+        Future<?> s2 = service.submit(ball2);
+
+        nap((int) (5000 * Math.random()));
+        Future<?> s3 = service.submit(ball3);
+
+        nap((int) (5000 * Math.random()));
+        Future<?> s4 = service.submit(ball4);
+
+        nap((int) (5000 * Math.random()));
+
+        System.out.println(s1);
+        while (!service.isTerminated()) {
+
+            if(ball1.getXpos() == ball1.getYpos()) {
+
+                s1.cancel(true);
+            }
+
+            if(ball2.getXpos() == ball2.getYpos()) {
+
+                s2.cancel(true);
+            }
+
+            if(ball3.getXpos() == ball3.getYpos()) {
+
+                s3.cancel(true);
+            }
+
+            if(ball4.getXpos() == ball4.getYpos()) {
+                System.out.println(ball4.getXpos());
+                s4.cancel(true);
+            }
+        }
+/*        Random r = new Random();
         int xyPos;
 
         ExecutorService service = Executors.newFixedThreadPool(5);
-        //ScheduledExecutorService service = Executors.newScheduledThreadPool(4);
-        //Future[] future = new Future[4];
         Future<Ball> ballFuture=null;
 
 
@@ -63,17 +104,9 @@ public class Solution {
             nap((int) (5000 * Math.random()));
         }
 
-        try {
-            System.out.println(ballFuture.get());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-//        while (!service.isTerminated()){
-//            System.out.println("lllaaaa");
-//        }
 
+        System.out.println(ballFuture);
+*/
 //        nap((int) (5000 * Math.random()));
 //        new Thread(new Ball(world, 50, 80, 5, 10, Color.red)).start();
 //        nap((int) (5000 * Math.random()));
