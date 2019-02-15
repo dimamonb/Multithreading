@@ -28,6 +28,15 @@ public class BallWorld extends JPanel {
         });
     }
 
+    public synchronized void removeBall(final Ball b){
+        balls.remove(b);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                repaint();
+            }
+        });
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         for (Ball b : balls)

@@ -1,21 +1,13 @@
 package ru.rzn.sbr.javaschool.lesson10.balls;
 
 import java.awt.*;
-import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.*;
 
 public class Ball implements Runnable {
 
     BallWorld world;
 
     private volatile boolean visible = false;
-
-    public int getXpos() {
-        return xpos;
-    }
-
-    public int getYpos() {
-        return ypos;
-    }
 
     private int xpos, ypos, xinc, yinc;
 
@@ -38,17 +30,29 @@ public class Ball implements Runnable {
 
     @Override
     public void run() {
+
         this.visible = true;
         try {
             while (true) {
                 move();
+                if (xpos == ypos) {
+                    barrier.await();
+                }
             }
         } catch (InterruptedException e ){
             // Пока ничего:)
+            System.out.println("Interrupted");
+            barrier.reset();
+            world.removeBall(this);
+
+        } catch (BrokenBarrierException e) {
+            e.printStackTrace();
         }
     }
 
     private final static CyclicBarrier barrier = new CyclicBarrier(4);
+
+
 
     public void move() throws InterruptedException {
         if (xpos >= world.getWidth() - BALLW || xpos <= 0) xinc = -xinc;
@@ -57,6 +61,7 @@ public class Ball implements Runnable {
 
         Thread.sleep(30);
         doMove();
+
         world.repaint();
     }
 

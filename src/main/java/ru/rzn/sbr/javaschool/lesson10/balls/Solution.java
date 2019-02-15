@@ -52,66 +52,21 @@ public class Solution {
 
         nap((int) (5000 * Math.random()));
         Future<?> s1 = service.submit(ball1);
-
         nap((int) (5000 * Math.random()));
         Future<?> s2 = service.submit(ball2);
-
         nap((int) (5000 * Math.random()));
         Future<?> s3 = service.submit(ball3);
-
         nap((int) (5000 * Math.random()));
         Future<?> s4 = service.submit(ball4);
-
         nap((int) (5000 * Math.random()));
 
-        System.out.println(s1);
-        while (!service.isTerminated()) {
 
-            if(ball1.getXpos() == ball1.getYpos()) {
+        ScheduledExecutorService destroyer = Executors.newSingleThreadScheduledExecutor();
+        destroyer.schedule(() -> {
+            System.out.println("Starting");
+            s1.cancel(true);
+        },15, TimeUnit.SECONDS);
 
-                s1.cancel(true);
-            }
-
-            if(ball2.getXpos() == ball2.getYpos()) {
-
-                s2.cancel(true);
-            }
-
-            if(ball3.getXpos() == ball3.getYpos()) {
-
-                s3.cancel(true);
-            }
-
-            if(ball4.getXpos() == ball4.getYpos()) {
-                System.out.println(ball4.getXpos());
-                s4.cancel(true);
-            }
-
-            if(s1.isCancelled() && s2.isCancelled() && s3.isCancelled() && s4.isCancelled()){
-                System.out.println("All cancelled");
-
-            }
-        }
-/*        Random r = new Random();
-        int xyPos;
-
-        ExecutorService service = Executors.newFixedThreadPool(5);
-        Future<Ball> ballFuture=null;
-
-
-        for (int i = 0; i < 4; i++) {
-            xyPos = r.nextInt(250);
-
-            Ball ball = new Ball(world, xyPos, xyPos, 8, 6, new Color(r.nextFloat(), r.nextFloat(), r.nextFloat()));
-            //service.scheduleAtFixedRate(ball, 1,5, TimeUnit.SECONDS);
-            nap((int) (5000 * Math.random()));
-            ballFuture = service.submit(ball, ball);
-            nap((int) (5000 * Math.random()));
-        }
-
-
-        System.out.println(ballFuture);
-*/
 //        nap((int) (5000 * Math.random()));
 //        new Thread(new Ball(world, 50, 80, 5, 10, Color.red)).start();
 //        nap((int) (5000 * Math.random()));
