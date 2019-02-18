@@ -1,6 +1,8 @@
 package ru.rzn.sbr.javaschool.lesson10.balls;
 
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
 import javax.swing.*;
@@ -50,24 +52,32 @@ public class Solution {
         Ball ball3= new Ball(world, 150, 100, 9, 7, Color.green);
         Ball ball4= new Ball(world, 200, 130, 3, 8, Color.black);
 
+        List<Future<?>> futureList = new ArrayList<>();
         nap((int) (5000 * Math.random()));
         Future<?> s1 = service.submit(ball1);
+        futureList.add(s1);
         nap((int) (5000 * Math.random()));
         Future<?> s2 = service.submit(ball2);
+        futureList.add(s2);
         nap((int) (5000 * Math.random()));
         Future<?> s3 = service.submit(ball3);
+        futureList.add(s3);
         nap((int) (5000 * Math.random()));
         Future<?> s4 = service.submit(ball4);
+        futureList.add(s4);
         nap((int) (5000 * Math.random()));
 
 
-
+        Random rand = new Random();
         ScheduledExecutorService destroyer = Executors.newSingleThreadScheduledExecutor();
         destroyer.schedule(() -> {
-            System.out.println("Starting");
-            s1.cancel(true);
-        },15, TimeUnit.SECONDS);
 
+            nap((int)(5000*Math.random()));
+            futureList.get(rand.nextInt(4)).cancel(true);
+
+        },15, TimeUnit.SECONDS);
+        service.shutdown();
+        destroyer.shutdown();
 //        nap((int) (5000 * Math.random()));
 //        new Thread(new Ball(world, 50, 80, 5, 10, Color.red)).start();
 //        nap((int) (5000 * Math.random()));

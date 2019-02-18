@@ -37,7 +37,7 @@ public class Ball implements Runnable {
 
         } catch (InterruptedException e ){
             // Пока ничего:)
-            System.out.println("Interrupted");
+            System.out.println(Thread.currentThread() + " Interrupted");
             world.removeBall(this);
 
         }
