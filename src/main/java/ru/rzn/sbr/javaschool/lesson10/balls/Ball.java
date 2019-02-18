@@ -2,6 +2,8 @@ package ru.rzn.sbr.javaschool.lesson10.balls;
 
 import java.awt.*;
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Ball implements Runnable {
 
@@ -12,6 +14,8 @@ public class Ball implements Runnable {
     private int xpos, ypos, xinc, yinc;
 
     private final Color col;
+
+    private Lock lock = new ReentrantLock();
 
     private final static int BALLW = 10;
     private final static int BALLH = 10;
@@ -34,12 +38,12 @@ public class Ball implements Runnable {
             while (true) {
                 move();
             }
-
         } catch (InterruptedException e ){
             // Пока ничего:)
             System.out.println(Thread.currentThread() + " Interrupted");
+            lock.lock();
             world.removeBall(this);
-
+            lock.unlock();
         }
 
     }
