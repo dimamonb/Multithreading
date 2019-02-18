@@ -24,30 +24,24 @@ public class Ball implements Runnable {
         this.xinc = xinc;
         this.yinc = yinc;
         this.col = col;
-
         world.addBall(this);
     }
 
     @Override
     public void run() {
-
         this.visible = true;
         try {
             while (true) {
                 move();
-                if (xpos == ypos) {
-                    barrier.await();
-                }
             }
+
         } catch (InterruptedException e ){
             // Пока ничего:)
             System.out.println("Interrupted");
-            barrier.reset();
             world.removeBall(this);
 
-        } catch (BrokenBarrierException e) {
-            e.printStackTrace();
         }
+
     }
 
     private final static CyclicBarrier barrier = new CyclicBarrier(4);
@@ -60,9 +54,22 @@ public class Ball implements Runnable {
         if (ypos >= world.getHeight() - BALLH || ypos <= 0) yinc = -yinc;
 
         Thread.sleep(30);
+
         doMove();
 
         world.repaint();
+        /**
+         * Остановка мячей на диагонали
+         * **/
+//        if (xpos == ypos) {
+//            try {
+//                barrier.await();
+//            } catch (BrokenBarrierException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+        /*****/
     }
 
     public synchronized void doMove() {
